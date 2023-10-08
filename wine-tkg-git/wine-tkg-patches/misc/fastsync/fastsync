@@ -5,13 +5,6 @@
 
 	  # check Linux headers
           sudo wget https://github.com/KyleGospo/winesync-kmod/raw/main/winesync.h -O /usr/include/linux/winesync.h
-	  winesync_header_check=$(echo '#include <linux/winesync.h>' | gcc -H -E -fsyntax-only - 2>&1 | head -n1 | cut -d' ' -f2-)
-	  if [[ ! -s $winesync_header_check ]]; then
-	    error $winesync_header_check
-	    error "Winesync header was not found. Build is forcibly prevented."
-	    error 'Please use linux-tkg build with _winesync="true" or https://aur.archlinux.org/packages/winesync-dkms/'
-	    exit 1
-	  fi
 
 	  # not allowed on Valve tree
 	  if [[ "$_custom_wine_source" = *"ValveSoftware"* ]]; then
