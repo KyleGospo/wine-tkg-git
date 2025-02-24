@@ -265,15 +265,16 @@ _package_nomakepkg() {
 
 	# Fixes compatibility with installation scripts (like winetricks) that use
 	# the wine64 binary, which is not present in WoW64 builds.
-	if [ "$_NOLIB32" = "wow64" ] || [ "$_new_makefiles" = "true" ]; then
+	if [ "$_NOLIB32" = "wow64" ] || [ "$_new_makefiles" ]; then
 		(cd "$_prefix/bin" && ln -s wine wine64)
 	fi
 
 	# This fix for new makefiles. Should work for old wine
 	if [ "$_NOLIB32" != "true" ]; then
-		ln -s "${pkgdir}$_prefix/$_lib32name/wine/i386-windows" "${pkgdir}$_prefix/$_lib64name/wine/"
+		cd "$_prefix"/"$_lib64name"/wine/
+		ln -s ../../"$_lib32name"/wine/i386-windows ./
 		if [ "$_NOLIB32" != "wow64" ]; then
-			ln -s "${pkgdir}$_prefix/$_lib32name/wine/i386-unix" "${pkgdir}$_prefix/$_lib64name/wine/"
+			ln -s ../../"$_lib32name"/wine/i386-unix ./
 		fi
 	fi
 
@@ -445,8 +446,17 @@ _package_makepkg() {
 
 	# Fixes compatibility with installation scripts (like winetricks) that use
 	# the wine64 binary, which is not present in WoW64 builds.
-	if [ "$_NOLIB32" = "wow64" ]; then
+	if [ "$_NOLIB32" = "wow64" ] || [ "$_new_makefiles" = "true" ]; then
 		(cd "${pkgdir}$_prefix/bin" && ln -s wine wine64)
+	fi
+
+	# This fix for new makefiles. Should work for old wine
+	if [ "$_NOLIB32" != "true" ]; then
+		cd "${pkgdir}$_prefix"/"$_lib64name"/wine/
+		ln -s ../../"$_lib32name"/wine/i386-windows ./
+		if [ "$_NOLIB32" != "wow64" ]; then
+			ln -s ../../"$_lib32name"/wine/i386-unix ./
+		fi
 	fi
 
 	# strip
