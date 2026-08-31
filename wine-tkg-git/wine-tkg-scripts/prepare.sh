@@ -1128,7 +1128,9 @@ _polish() {
 	if [ -e tools/make_specfiles ]; then
 	  tools/make_specfiles
 	fi
-	autoreconf -fiv
+	if [ "$_NOCOMPILE" != "true" ]; then
+	  autoreconf -fiv
+	fi
 
 	# wine late user patches - Applied after make_vulkan/make_requests/autoreconf
 	_userpatch_target="plain-wine"
