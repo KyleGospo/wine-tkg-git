@@ -24,6 +24,7 @@ _no_steampath="false"
 
 # true disables building in valve SDK container to build against current system libs
 # this will currently lead to issues with some games and anticheats and possibly break compilation
+# You might want to set _nomakepkg_dependency_autoresolver="true" in your config when using _no_container="true"
 # !!! "false" requires a working Docker or Podman setup !!!
 _no_container="false"
 
